@@ -6,7 +6,7 @@ import numpy as np
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
 
 # On importe les fonctions et la classe directement depuis le module ajouté
-from image_utils import ImagePGM, read_pgm, write_pgm
+from image_utils import ImagePGM, read_pgm, write_pgm, calculate_histogram, calculate_metrics
 
 def main():
     """
@@ -46,6 +46,21 @@ def main():
         else:
             print("\nValidation croisée : ATTENTION ! La matrice lue et la matrice réécrite sont DIFFÉRENTES. (ÉCHEC)")
 
+        # --- D. Calcul et Affichage des Métriques (Tâche 3 & 4) ---
+        
+        # 1. Calcul de l'Histogramme (pour vérification interne)
+        histogram = input_image.calculate_histogram()
+        print(f"\n[Analyse de l'Histogramme]")
+        print(f"  Somme des pixels (vérification) : {np.sum(histogram)}")
+        print(f"  Taille totale de l'image : {input_image.height * input_image.width}")
+        
+        # 2. Calcul des Métriques
+        metrics = input_image.calculate_metrics()
+        print("\n[Métriques Statistiques]")
+        print(f"  Luminance (Moyenne) : {metrics['luminance']:.2f}")
+        print(f"  Niveau de Gris Min : {metrics['min_val']}")
+        print(f"  Niveau de Gris Max : {metrics['max_val']}")
+        print(f"  Contraste (Dynamique) : {metrics['contrast_dynamique']}")
 
     except Exception as e:
         print(f"\nERREUR lors du traitement du fichier : {e}")

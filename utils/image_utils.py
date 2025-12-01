@@ -27,12 +27,58 @@ class ImagePGM:
         """ Retourne la matrice de pixels (NumPy array). """
         return self.data
     
+    def calculate_histogram(self):
+        """
+        Calcule l'histogramme de l'image.
+
+        Returns:
+            np.ndarray: Un tableau 1D de 256 éléments (pour 8 bits) où 
+                        l'indice k contient le nombre de pixels ayant l'intensité k.
+        """
+        if self.data is None:
+            raise ValueError("L'image est vide, impossible de calculer l'histogramme.")
+
+        # NumPy's histogram est très rapide.
+        # bins=256 pour les 256 niveaux de gris [0, 255]
+        # range=(0, 256) assure que toutes les valeurs sont couvertes
+        hist, _ = np.histogram(self.data, bins=256, range=(0, 256))
+        
+        return hist
+
+    def calculate_metrics(self):
+        """
+        Calcule les métriques de base (Luminance et Contraste simple).
+
+        Returns:
+            dict: Un dictionnaire contenant les métriques calculées.
+        """
+        if self.data is None:
+            raise ValueError("L'image est vide, impossible de calculer les métriques.")
+            
+        # Utiliser les fonctions NumPy optimisées
+        
+        # Min et Max pour le Contraste
+        min_val = np.min(self.data)
+        max_val = np.max(self.data)
+        
+        # Luminance (Moyenne)
+        luminance = np.mean(self.data)
+        
+        # Contraste (Dynamique simple)
+        contrast = max_val - min_val
+        
+        return {
+            'min_val': int(min_val),
+            'max_val': int(max_val),
+            'luminance': float(luminance),
+            'contrast_dynamique': int(contrast)
+        }
+    
     def __str__(self):
         """ Représentation textuelle de l'objet. """
         if self.data is not None:
             return f"ImagePGM ({self.height}x{self.width}, Max Val: {self.max_val}, Type: {self.data.dtype})"
         return "ImagePGM (Vide)"
-
 
 
 def read_pgm(filepath):
@@ -123,3 +169,19 @@ def write_pgm(image, filepath):
         # 4. Écriture des données brutes
         # Utilisation de .tobytes() pour écrire la matrice NumPy directement
         f.write(image.data.tobytes())
+
+
+def calculate_histogram(image):
+    """
+    Fonction utilitaire pour calculer l'histogramme d'une image.
+    (Appelle la méthode de l'objet ImagePGM)
+    """
+    return image.calculate_histogram()
+
+
+def calculate_metrics(image):
+    """
+    Fonction utilitaire pour calculer les métriques d'une image.
+    (Appelle la méthode de l'objet ImagePGM)
+    """
+    return image.calculate_metrics()

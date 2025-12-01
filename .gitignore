@@ -3,3 +3,4 @@ __pycache__/
 
 # Fichiers Python compilés
 *.pyc
+*.pgm
