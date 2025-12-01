@@ -2,11 +2,32 @@ import os
 import sys
 import numpy as np
 
+import matplotlib.pyplot as plt
+
 # Importer la classe et les fonctions utilitaires
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
 
 # On importe les fonctions et la classe directement depuis le module ajouté
 from image_utils import ImagePGM, read_pgm, write_pgm, calculate_histogram, calculate_metrics
+
+def plot_histogram(histogram, title="Histogramme des niveaux de gris"):
+    """
+    Affiche l'histogramme de l'image en utilisant Matplotlib.
+    """
+    plt.figure(figsize=(8, 5))
+    
+    # Générer les indices k de 0 à 255
+    k_indices = np.arange(len(histogram)) 
+    
+    # Affichage de l'histogramme
+    plt.bar(k_indices, histogram, width=1.0, color='gray') 
+    
+    plt.title(title)
+    plt.xlabel("Niveau de gris k (0 à 255)")
+    plt.ylabel("Nombre de pixels H(k)")
+    plt.xlim([0, 255])
+    plt.show()
+
 
 def main():
     """
@@ -61,6 +82,10 @@ def main():
         print(f"  Niveau de Gris Min : {metrics['min_val']}")
         print(f"  Niveau de Gris Max : {metrics['max_val']}")
         print(f"  Contraste (Dynamique) : {metrics['contrast_dynamique']}")
+
+        # --- E. Visualisation (Tâche Complémentaire) ---
+        print("\n[Visualisation] Affichage de l'histogramme...")
+        plot_histogram(histogram, f"Histogramme de {os.path.basename(input_filepath)}")
 
     except Exception as e:
         print(f"\nERREUR lors du traitement du fichier : {e}")
