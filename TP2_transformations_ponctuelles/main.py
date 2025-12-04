@@ -5,7 +5,7 @@ import numpy as np
 # Configuration du chemin d'accès
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
 from image_utils import read_pgm, write_pgm, calculate_metrics
-from image_processing import apply_negative_inversion, adjust_brightness_contrast_linear
+from image_processing import apply_negative_inversion, adjust_brightness_contrast_linear, apply_gamma_correction
 
 def main():
     """
@@ -69,6 +69,21 @@ def main():
         output_filepath_c = os.path.join(os.path.dirname(input_filepath), "contrasted_" + os.path.basename(input_filepath))
         write_pgm(contrasted_image, output_filepath_c)
         print(f"  Sauvegarde réussie : {output_filepath_c}")
+
+        # Exemple 3 : Gamma < 1.0 (Éclaircissement des tons moyens)
+        gamma_val = 0.5
+        print(f"\n[Tâche 3] Correction Gamma (gamma={gamma_val})...")
+        gamma_image = apply_gamma_correction(input_image, gamma_val)
+        
+        metrics_g = gamma_image.calculate_metrics()
+        print(f"  Luminance originale: {input_image.calculate_metrics()['luminance']:.2f}")
+        print(f"  Luminance après Gamma ({gamma_val}): {metrics_g['luminance']:.2f} (Augmentation attendue)")
+        
+        # Sauvegarde avec gamma dans le nom de fichier
+        output_filepath_g = os.path.join(os.path.dirname(input_filepath), 
+                                         "gamma_" + str(gamma_val).replace('.', 'p') + "_" + os.path.basename(input_filepath))
+        write_pgm(gamma_image, output_filepath_g)
+        print(f"  Sauvegarde réussie : {output_filepath_g}")
 
     except Exception as e:
         print(f"\nERREUR lors du traitement du fichier : {e}")

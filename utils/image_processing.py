@@ -68,3 +68,46 @@ def adjust_brightness_contrast_linear(input_image: ImagePGM, alpha: float, beta:
     output_image.data = output_data
     
     return output_image
+
+# Fichier : utils/image_processing.py (Suite)
+
+def apply_gamma_correction(input_image: ImagePGM, gamma: float) -> ImagePGM:
+    """
+    Applique la correction Gamma (non-linéaire) à l'image.
+
+    I_out = L_max * (I_in / L_max)^gamma
+
+    Args:
+        input_image: L'objet ImagePGM d'entrée.
+        gamma (float): Facteur gamma (si < 1.0 : éclaircit, si > 1.0 : assombrit).
+
+    Returns:
+        ImagePGM: Nouvelle image traitée.
+    """
+    if input_image.data is None:
+        raise ValueError("L'image d'entrée est vide.")
+
+    L_max = input_image.max_val
+    temp_data = input_image.data.astype(np.float64)
+
+    # 1. Normalisation [0, 1] : I_in / L_max
+    normalized_data = temp_data / L_max
+
+    # 2. Application de la loi de puissance (Gamma)
+    gamma_corrected_data = np.power(normalized_data, gamma)
+
+    # 3. Dénormalisation [0, L_max] et Rognage (Clamping)
+    output_data_float = gamma_corrected_data * L_max
+    
+    # Le rognage est ici principalement pour la sécurité, car la transformation
+    # sur une plage [0, 1] garde les valeurs dans cette plage.
+    output_data_clipped = np.clip(output_data_float, 0, L_max)
+    
+    # 4. Conversion finale en uint8
+    output_data = output_data_clipped.astype(np.uint8)
+
+    # Création et retour de la nouvelle image
+    output_image = ImagePGM(input_image.height, input_image.width, L_max)
+    output_image.data = output_data
+
+    return output_image
