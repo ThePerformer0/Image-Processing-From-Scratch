@@ -1,29 +1,44 @@
-# 🖼️ Série de Travaux Pratiques : Traitement d'Image Numérique (Master 2)
+# 👁️ VisionCore - Suite Logicielle de Traitement d'Image
 
-Ce dépôt contient la série complète de Travaux Pratiques réalisés pour le module de Traitement d'Image Numérique. L'objectif est d'implémenter manuellement (sans utiliser de bibliothèques haut niveau comme OpenCV pour les algorithmes) les fondations du traitement d'image, de la lecture PGM à la morphologie mathématique.
+> **Projet de Master 2 - Génie Informatique**
+> **Auteur :** FEKE JIMMY WILSON
 
-## 🎯 Objectifs Pédagogiques
+## 📌 À propos
+**VisionCore** est une application de bureau professionnelle dédiée à l'analyse et à la restauration d'images numériques. Conçue comme une synthèse de mes compétences acquises en Master 2, elle se distingue par son approche **"From Scratch"**.
 
-* **Compréhension Mathématique :** Maîtriser les algorithmes clés basés sur l'algèbre matricielle et le calcul différentiel.
-* **Code Professionnel :** Développer un code Python propre, modulaire et bien documenté (utilisation de classes, de fonctions utilitaires).
+Contrairement aux solutions commerciales qui utilisent des "boîtes noires", le moteur de VisionCore implémente manuellement les algorithmes fondamentaux du traitement du signal (convolutions, transformations fréquentielles, morphologie mathématique) en utilisant l'algèbre matricielle pure via **NumPy**.
 
-## 📁 Structure du Projet
+## 🚀 Fonctionnalités Clés
 
-| Dossier | Description |
-| :--- | :--- |
-| `utils/` | Fonctions et classes Python réutilisables (e.g., `ImagePGM` pour la manipulation de données). |
-| `images/` | Contient toutes les images de test (`.pgm` recommandées). |
-| `TPX_.../` | Contient le code principal (`main.py`) et le `README.md` spécifique pour chaque TP. |
+### 1. Laboratoire d'Analyse
+* **Histogramme Temps Réel :** Visualisation dynamique de la distribution spectrale.
+* **Métriques :** Calcul instantané de la luminance, du contraste (RMS) et de l'entropie.
 
-## 💻 Environnement et Dépendances
+### 2. Moteur de Transformation
+* **Photométrie :** Correction Gamma, égalisation d'histogramme, inversion négative.
+* **Look-Up Tables (LUT) :** Optimisation des calculs pour un rendu instantané.
 
-Ce projet utilise principalement **Python** et la bibliothèque **NumPy** pour la gestion efficace des matrices.
+### 3. Filtrage Spatial & Convolution
+* **Débruitage :** Filtres Gaussiens (lissage) et Médians (préservation des bords).
+* **Extraction de Caractéristiques :** Détection de contours via opérateurs de gradient (Sobel, Prewitt).
 
+### 4. Vision & Segmentation
+* **Binarisation Intelligente :** Algorithme d'Otsu (minimisation de la variance intra-classe).
+* **Morphologie :** Opérations d'érosion/dilatation pour le nettoyage des masques binaires.
+
+## 🛠️ Stack Technique
+
+| Composant | Technologie | Rôle |
+| :--- | :--- | :--- |
+| **Langage** | Python 3.10+ | Logique globale |
+| **Core** | **NumPy** | Calcul matriciel haute performance |
+| **I/O** | Pillow (PIL) | Gestion des formats (JPG, PNG, BMP) |
+| **Interface** | **CustomTkinter** | UI Moderne (Dark Mode, Responsive) |
+| **Graphiques** | Matplotlib | Visualisation des histogrammes |
+| **Build** | PyInstaller | Compilation en exécutable (.exe / Linux) |
+
+## 📦 Installation et Utilisation
+
+### Prérequis
 ```bash
-# Recommandation : Utiliser un environnement virtuel
-python -m venv venv
-source venv/bin/activate  # Sous Linux/macOS
-# .\venv\Scripts\activate  # Sous Windows
-
-# Installation des dépendances
-pip install numpy
+pip install -r requirements.txt

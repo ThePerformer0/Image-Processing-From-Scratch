@@ -1,3 +1,7 @@
 
 numpy
 matplotlib
+pillow
+customtkinter
+packaging
+pyinstaller

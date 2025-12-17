@@ -1,8 +1,7 @@
 venv/
 __pycache__/
-
-# Fichiers Python compilés
 *.pyc
-*.pgm
-*.png
-*.jpg
+.DS_Store
+.env
+.idea/
+.vscode/
